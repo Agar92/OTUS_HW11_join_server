@@ -75,5 +75,7 @@ include(CPack)
 
 enable_testing()
 add_test(unit_tests unit_tests)
+include(GoogleTest)
+gtest_discover_tests(unit_tests)
 
 
