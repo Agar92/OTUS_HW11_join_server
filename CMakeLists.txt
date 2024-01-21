@@ -1,10 +1,9 @@
 cmake_minimum_required(VERSION 3.2)
 
-if ($ENV{TRAVIS_BUILD_NUMBER})
-    project(join_server VERSION 0.0.$ENV{TRAVIS_BUILD_NUMBER})
-else()
-    project(join_server VERSION 0.0.1)
-endif()
+set(PATCH_VERSION "1" CACHE INTERNAL "Patch version")
+set(PROJECT_VERSION 0.0.${PATCH_VERSION})
+project(join_server VERSION ${PROJECT_VERSION})
+configure_file(include/version.h.in version.h)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -17,7 +16,7 @@ FetchContent_MakeAvailable(googletest)
 
 
 find_package(Threads REQUIRED)
-find_package(Boost REQUIRED)
+find_package(Boost COMPONENTS system REQUIRED)
 include_directories(${GTEST_INCLUDE_DIR} ${Boost_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/include ${CMAKE_BINARY_DIR})
 
 add_executable(join_server
