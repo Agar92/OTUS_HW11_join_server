@@ -8,10 +8,16 @@ using std::string, std::vector;
 void Parser::ParseInput(const string& input_text)
 {
     using namespace std;
+    std::string InputText="";
     if (input_text.empty()) return;
+    {
+        int i=0;
+        while(std::isspace( input_text[i] )) i++;
+        InputText=input_text.substr(i);
+    }
     if (!m_unfinished_command.empty())
-        m_unfinished_command += input_text;
-    const string& parse_str = m_unfinished_command.empty() ? input_text : m_unfinished_command;
+        m_unfinished_command += InputText;
+    const string& parse_str = m_unfinished_command.empty() ? InputText : m_unfinished_command;
     size_t start = 0;
     size_t terminator_pos;
     while(start < parse_str.size())
