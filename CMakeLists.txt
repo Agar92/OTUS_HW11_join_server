@@ -16,8 +16,9 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 
-find_package(Threads)
-include_directories(${GTEST_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/include ${CMAKE_BINARY_DIR})
+find_package(Threads REQUIRED)
+find_package(Boost REQUIRED)
+include_directories(${GTEST_INCLUDE_DIR} ${Boost_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/include ${CMAKE_BINARY_DIR})
 
 add_executable(join_server
     src/main.cpp
@@ -41,7 +42,8 @@ set_target_properties(unit_tests PROPERTIES
 )
 
 target_link_libraries(join_server
-        ${CMAKE_THREAD_LIBS_INIT})
+        ${CMAKE_THREAD_LIBS_INIT}
+        ${Boost_LIBRARIES})
 
 target_link_libraries(unit_tests
         GTest::gtest_main
@@ -66,17 +68,13 @@ endif()
 install(TARGETS join_server RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
-
 set(CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${PROJECT_VERSION_MINOR}")
 set(CPACK_PACKAGE_VERSION_PATCH "${PROJECT_VERSION_PATCH}")
-
 set(CPACK_PACKAGE_CONTACT agar10@yandex.ru)
-
 include(CPack)
 
 enable_testing()
-
 add_test(unit_tests unit_tests)
 
 
